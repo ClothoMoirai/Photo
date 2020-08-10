@@ -3,6 +3,10 @@
 This automates basic processing of photos from my D800, creating a simple HTML page to display them and uploading to my webhosting. There are several TODO items but it is functional. Run with -h for some help information.
 
 ---
+- MultithreadProcessPhotos.py - A threaded processor.
+- DuplicateCardsThreadedProcessPhotos.py - experiment that accepts multiple source locations and alternately reads files from each. Depending on bottleneck situations it could produce a performance boost.
+
+---
 
 ## Requirements
 
@@ -30,5 +34,4 @@ This automates basic processing of photos from my D800, creating a simple HTML p
 ## TODO
 
 - config file support
-- conditional imports - no need to have paramiko and scp if transfer won't ever happen, and it would be nice to have -h be able to display the need for libraries.
 - better output webpage.

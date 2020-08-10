@@ -2,17 +2,16 @@
 from wand.image import Image
 import os
 import time
-import paramiko
 import argparse
 import getpass
-from scp import SCPClient
 from multiprocessing.dummy import Pool
 
 start = time.time()
 default_local_dir = os.path.expanduser("~") + '/Pictures/'
 default_source_dir = '/media'
 thread_count = 4
-
+default_resize = 33
+default_thumbnail = 10
 
 def process_file(this_file):
     original_file = original_dir + '/' + this_file
@@ -100,6 +99,9 @@ parser.add_argument('--local_dir', default=default_local_dir, help='Local disk d
 parser.add_argument('--remote_host', help='Remote hostname. Not required if --noscp is specified')
 parser.add_argument('--remote_user', default=getpass.getuser(), help='remote username. default is local username. unused if --noscp is specified')
 parser.add_argument('--remote_dir', default='~', help='remote directory. Unused if --noscp is specified.')
+parser.add_argument('--resize_percent', default=default_resize, help='resize percentage. Default: {}'.format(default_resize))
+parser.add_argument('--thumbnail_percent', default=default_thumbnail, help='thumbnail percentage. Default: {}'.format(default_thumbnail))
+
 # parser.add_argument('--config', help='Use this section of the configuration settings file.')
 # parser.add_argument('--create_config', help='Add this configuration to the settings file.')
 parser.add_argument('directory', help='Event directory name')
@@ -109,6 +111,8 @@ how_many = int(args.threads)
 file_location = args.media
 base_dir = args.local_dir
 if not args.noscp:
+    import paramiko
+    from scp import SCPClient
     target_dir = args.remote_dir
     remote_host = args.remote_host
     remote_user = args.remote_user
@@ -117,5 +121,8 @@ thumb_dir = dest_dir + '/thumb'
 resize_dir = dest_dir + '/resize'
 original_dir = dest_dir + '/original'
 index_file = dest_dir + '/index.html'
+thumbnail_percent = args.thumbnail_percent / 100
+resize_percent = args.resize_percent / 100
+
 
 main()
